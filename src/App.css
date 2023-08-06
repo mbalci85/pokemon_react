@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+SA+Beginner:wght@500&family=Montserrat&family=Quicksand:wght@500&family=Victor+Mono:wght@500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Edu SA Beginner', cursive;
+}
+
+a {
+    text-decoration: none;
+}
