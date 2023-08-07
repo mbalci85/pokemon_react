@@ -1,0 +1,12 @@
+header {
+    display: flex;
+    align-items: center;
+    height: 10vh;
+    background-color: var(--bg_color_header_footer);
+}
+
+.nav-item{
+   margin: 0 0.6rem;
+   font-size: 1.8rem;
+   color: #ffff;
+}
