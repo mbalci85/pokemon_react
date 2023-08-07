@@ -20,9 +20,12 @@ const Home = () => {
 
 	return (
 		<div className='all-cards-container'>
-			{pokeCards.map((poke) => {
-				return <PokemonCard pokemon={poke} key={poke.url} />;
-			})}
+			<h1>POKEMONS</h1>
+			<main className='all-cards'>
+				{pokeCards.map((poke) => {
+					return <PokemonCard pokemon={poke} key={poke.url} />;
+				})}
+			</main>
 		</div>
 	);
 };

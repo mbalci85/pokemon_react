@@ -3,12 +3,11 @@ import './PokemonCard.css';
 import axios from 'axios';
 
 const PokemonCard = ({ pokemon }) => {
-	const pokeUrl = pokemon.url;
 	const [card, setCard] = useState('');
 
 	useEffect(() => {
 		axios
-			.get(pokeUrl)
+			.get(pokemon.url)
 			.then((res) => {
 				console.log(res.data);
 				setCard(res.data);
@@ -19,8 +18,9 @@ const PokemonCard = ({ pokemon }) => {
 	return (
 		<>
 			{card && (
-				<div>
+				<div className='pokemon-card'>
 					<img src={card.sprites.other.home.front_shiny} alt='poke_img' />
+					<p>{pokemon.name}</p>
 				</div>
 			)}
 		</>
