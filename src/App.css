@@ -5,7 +5,8 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Edu SA Beginner', cursive;
-    --bg_color_header_footer: #363b81
+    --bg_color_header_footer: #363b81;
+    --bg_color_page: #5db9ff;
 }
 
 a {
