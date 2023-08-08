@@ -20,4 +20,17 @@
 
 .pokemon-card p {
     font-size: 1.5rem;
+    margin: 1rem 0;
+}
+
+.pokemon-card button {
+    font-size: 1.5rem;
+    border: none;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border-radius: 0.3rem;
+    background-color: var(--bg_color_header_footer);
+    color: #ffff;
+    cursor: pointer;
+    width: 10rem;
 }
