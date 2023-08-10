@@ -9,13 +9,15 @@ const Detail = () => {
 	const [pokeCard, setPokeCard] = useState('');
 
 	useEffect(() => {
-		axios
-			.get(detailUrl)
-			.then((res) => {
-				console.log(res.data);
-				setPokeCard(res.data);
-			})
-			.catch((err) => console.log(err));
+		const fetchDetail = async () => {
+			try {
+				const response = await axios.get(detailUrl);
+				setPokeCard(response.data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		fetchDetail();
 	}, []);
 
 	return (
