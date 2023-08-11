@@ -8,6 +8,12 @@
     font-size: 1.8rem;
 }
 
+.all-cards-container input {
+    height: 2rem;
+    font-size: 2rem;
+    width: 20rem;
+}
+
 .all-cards {
     display: flex;
     justify-content: space-around;

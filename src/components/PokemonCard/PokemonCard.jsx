@@ -10,7 +10,6 @@ const PokemonCard = ({ pokemon }) => {
 		axios
 			.get(pokemon.url)
 			.then((res) => {
-				console.log(res.data);
 				setCard(res.data);
 			})
 			.catch((err) => console.log(err));
