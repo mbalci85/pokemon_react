@@ -23,7 +23,6 @@
     padding: 0.5rem;
     border-radius: 0.4rem;
     border: none;
-    padding: 0.3rem;
     margin-right: 0.5rem;
     text-align: center;
 
@@ -50,7 +49,6 @@
     align-items: center;
     width: 100%;
     flex-wrap: wrap;
-    /* background-color: pink; */
 }
 
 .filtered-char-container {
@@ -85,4 +83,11 @@
     background-color: var(--bg_color_page);
     cursor: pointer;
     color: #ffff;
+}
+
+
+.no-result-msg {
+    margin: 2rem 0;
+    font-size: 2.5rem;
+    color: #FF0000;
 }

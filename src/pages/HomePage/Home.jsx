@@ -42,6 +42,8 @@ const Home = () => {
 		if (id - 1 !== 0) {
 			fetchPokemons(id - 1);
 			setUserInput('');
+		} else {
+			fetchPokemons(1010);
 		}
 	};
 
@@ -49,6 +51,8 @@ const Home = () => {
 		if (id + 1 !== 1011) {
 			fetchPokemons(id + 1);
 			setUserInput('');
+		} else {
+			fetchPokemons(1);
 		}
 	};
 
@@ -93,13 +97,18 @@ const Home = () => {
 									{pokeCards[0].name.charAt(0).toUpperCase() +
 										pokeCards[0].name.slice(1)}
 								</p>
-								<Link to={`/detail/${pokeCards[0].id}`}>See Details</Link>
+								<Link to={`/detail/${id}`}>See Details</Link>
 							</div>
 							<div className='next-prev-btn-container'>
 								<button onClick={nextPoke} className='next-btn'>
 									Next &rarr;
 								</button>
 							</div>
+						</div>
+					) : pokeCards.length === 0 ? (
+						<div className='no-result-msg-container'>
+							<p className='no-result-msg'>There is no such Pokemon!!!!</p>
+							<p>Click Home or search another Pokemon :)</p>
 						</div>
 					) : (
 						<main className='all-cards'>

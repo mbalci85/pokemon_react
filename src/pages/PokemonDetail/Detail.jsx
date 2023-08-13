@@ -28,7 +28,9 @@ const Detail = () => {
 						src={pokeCard.sprites.other.home.front_shiny}
 						alt={`${pokeCard.name}_img`}
 					/>
-					<p className='detail-item-name'>{pokeCard.name}</p>
+					<p className='detail-item-name'>
+						{pokeCard.name.charAt(0).toUpperCase() + pokeCard.name.slice(1)}
+					</p>
 					<div className='detail-item-container'>
 						<p className='detail-item'>Height: {pokeCard.height}</p>
 						<p className='detail-item'>Weight: {pokeCard.weight}</p>
