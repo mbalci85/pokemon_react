@@ -31,7 +31,7 @@ const Home = () => {
 		setUserInput('');
 	}, [location]);
 
-	const searchByName = (e) => {
+	const search = (e) => {
 		e.preventDefault();
 		fetchPokemons(userInput);
 	};
@@ -50,49 +50,66 @@ const Home = () => {
 
 	return (
 		<>
-			{pokeCards &&
-				(pokeCards.length === 1 ? (
-					<div className='all-cards-container'>
-						<button onClick={prevPoke}>Previous</button>
-						<img
-							src={pokeCards[0].sprites.other.home.front_shiny}
-							alt={`${pokeCards[0].name}_img`}
+			{pokeCards && (
+				<div className='all-cards-container'>
+					<h1>POKEMONS</h1>
+					<form onSubmit={search} className='search-form'>
+						<input
+							type='text'
+							placeholder='Search by Name or ID (1-1010)'
+							value={userInput}
+							onChange={(e) => {
+								setUserInput(e.target.value);
+							}}
+							className='search-input'
 						/>
-						<p className='detail-item'>ID: {pokeCards[0].id}</p>
-						<p className='detail-item'>Height: {pokeCards[0].height}</p>
-						<p className='detail-item'>Weight: {pokeCards[0].weight}</p>
-						<p className='detail-item'>
-							Species: {pokeCards[0].species.name}
-						</p>
-						<p className='detail-item'>
-							Abilities:{' '}
-							{pokeCards[0].abilities
-								.map((item) => item.ability.name)
-								.join(', ')}
-						</p>
-						<button onClick={nextPoke}>Next</button>
-					</div>
-				) : (
-					<div className='all-cards-container'>
-						<h1>POKEMONS</h1>
-						<form onSubmit={searchByName}>
-							<input
-								type='text'
-								placeholder='Search by Name or ID(1-1010)'
-								value={userInput}
-								onChange={(e) => {
-									setUserInput(e.target.value);
-								}}
-							/>
-							<button type='submit'>Search</button>
-						</form>
+						<button type='submit' className='search-submit-btn'>
+							Search
+						</button>
+					</form>
+					{pokeCards.length === 1 ? (
+						<div className='search-container'>
+							<div className='prev-btn'>
+								<button onClick={prevPoke}>Previous</button>
+							</div>
+							<div className='search-result-container'>
+								<img
+									src={
+										pokeCards[0].sprites.other.home.front_shiny ||
+										pokeCards[0].sprites.front_default
+									}
+									alt={`${pokeCards[0].name}_img`}
+								/>
+								<p className='detail-item'>ID: {pokeCards[0].id}</p>
+								<p className='detail-item'>
+									Height: {pokeCards[0].height}
+								</p>
+								<p className='detail-item'>
+									Weight: {pokeCards[0].weight}
+								</p>
+								<p className='detail-item'>
+									Species: {pokeCards[0].species.name}
+								</p>
+								<p className='detail-item'>
+									Abilities:{' '}
+									{pokeCards[0].abilities
+										.map((item) => item.ability.name)
+										.join(', ')}
+								</p>
+							</div>
+							<div className='next-btn'>
+								<button onClick={nextPoke}>Next</button>
+							</div>
+						</div>
+					) : (
 						<main className='all-cards'>
 							{pokeCards.map((poke) => {
 								return <PokemonCard pokemon={poke} key={poke.url} />;
 							})}
 						</main>
-					</div>
-				))}
+					)}
+				</div>
+			)}
 		</>
 	);
 };
