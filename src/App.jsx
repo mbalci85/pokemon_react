@@ -6,7 +6,6 @@ import Footer from './components/Footer/Footer';
 import Home from './pages/HomePage/Home';
 import About from './pages/About/About';
 import Detail from './pages/PokemonDetail/Detail';
-import PokemonCard from './components/PokemonCard/PokemonCard';
 
 const App = () => {
 	return (
