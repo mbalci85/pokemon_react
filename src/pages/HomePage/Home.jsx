@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 
 const Home = () => {
@@ -13,7 +13,7 @@ const Home = () => {
 	const fetchPokemons = async (searchValue) => {
 		const url = searchValue
 			? `https://pokeapi.co/api/v2/pokemon/${searchValue}`
-			: 'https://pokeapi.co/api/v2/pokemon/';
+			: 'https://pokeapi.co/api/v2/pokemon/?limit=40';
 		try {
 			const response = await axios.get(url);
 			setPokeCards(searchValue ? [response.data] : response.data.results);
@@ -33,18 +33,22 @@ const Home = () => {
 
 	const search = (e) => {
 		e.preventDefault();
-		fetchPokemons(userInput);
+		if (userInput) {
+			fetchPokemons(userInput.toLowerCase());
+		}
 	};
 
 	const prevPoke = () => {
 		if (id - 1 !== 0) {
 			fetchPokemons(id - 1);
+			setUserInput('');
 		}
 	};
 
 	const nextPoke = () => {
 		if (id + 1 !== 1011) {
 			fetchPokemons(id + 1);
+			setUserInput('');
 		}
 	};
 
@@ -68,11 +72,13 @@ const Home = () => {
 						</button>
 					</form>
 					{pokeCards.length === 1 ? (
-						<div className='search-container'>
-							<div className='prev-btn'>
-								<button onClick={prevPoke}>Previous</button>
+						<div className='search-result-container'>
+							<div className='next-prev-btn-container'>
+								<button onClick={prevPoke} className='prev-btn'>
+									&larr; Previous
+								</button>
 							</div>
-							<div className='search-result-container'>
+							<div className='filtered-char-container'>
 								<img
 									src={
 										pokeCards[0].sprites.other.home.front_shiny ||
@@ -80,25 +86,19 @@ const Home = () => {
 									}
 									alt={`${pokeCards[0].name}_img`}
 								/>
-								<p className='detail-item'>ID: {pokeCards[0].id}</p>
-								<p className='detail-item'>
-									Height: {pokeCards[0].height}
+								<p className='search-result-info'>
+									ID: {pokeCards[0].id}
 								</p>
-								<p className='detail-item'>
-									Weight: {pokeCards[0].weight}
+								<p className='search-result-info'>
+									{pokeCards[0].name.charAt(0).toUpperCase() +
+										pokeCards[0].name.slice(1)}
 								</p>
-								<p className='detail-item'>
-									Species: {pokeCards[0].species.name}
-								</p>
-								<p className='detail-item'>
-									Abilities:{' '}
-									{pokeCards[0].abilities
-										.map((item) => item.ability.name)
-										.join(', ')}
-								</p>
+								<Link to={`/detail/${pokeCards[0].id}`}>See Details</Link>
 							</div>
-							<div className='next-btn'>
-								<button onClick={nextPoke}>Next</button>
+							<div className='next-prev-btn-container'>
+								<button onClick={nextPoke} className='next-btn'>
+									Next &rarr;
+								</button>
 							</div>
 						</div>
 					) : (
