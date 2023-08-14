@@ -8,16 +8,25 @@ const Home = () => {
 	const [pokeCards, setPokeCards] = useState([]);
 	const [userInput, setUserInput] = useState('');
 	const [id, setId] = useState(0);
+	const [nextUrl, setNextUrl] = useState('');
+	const [prevUrl, setPrevUrl] = useState('');
+	const [changePage, setChangePage] = useState('');
 	const location = useLocation(); // When click Home link, it resets page
 
-	const fetchPokemons = async (searchValue) => {
-		const url = searchValue
+	const fetchPokemons = async (searchValue = '', change) => {
+		const url = searchValue !== ''
 			? `https://pokeapi.co/api/v2/pokemon/${searchValue}`
+			: changePage === 'Next'
+			? nextUrl
+			: changePage === 'Previous'
+			? prevUrl
 			: 'https://pokeapi.co/api/v2/pokemon/?limit=40';
 		try {
 			const response = await axios.get(url);
 			setPokeCards(searchValue ? [response.data] : response.data.results);
 			setId(searchValue ? response.data.id : '');
+			setNextUrl(response.data.next);
+			setPrevUrl(response.data.previous);
 		} catch (error) {
 			if (error.response.status === 404) {
 				setPokeCards([]);
@@ -29,7 +38,9 @@ const Home = () => {
 		fetchPokemons();
 		setPokeCards([]);
 		setUserInput('');
-	}, [location]);
+		console.log(nextUrl);
+		console.log(prevUrl);
+	}, [location, changePage]);
 
 	const search = (e) => {
 		e.preventDefault();
@@ -61,20 +72,36 @@ const Home = () => {
 			{pokeCards && (
 				<div className='all-cards-container'>
 					<h1>POKEMONS</h1>
-					<form onSubmit={search} className='search-form'>
-						<input
-							type='text'
-							placeholder='Search by Name or ID (1-1010)'
-							value={userInput}
-							onChange={(e) => {
-								setUserInput(e.target.value);
-							}}
-							className='search-input'
-						/>
-						<button type='submit' className='search-submit-btn'>
-							Search
+					<div className='search-pagination-container'>
+						<button
+							onClick={() => {
+								setChangePage('Previous');
+								fetchPokemons();
+							}}>
+							Previous Page
 						</button>
-					</form>
+						<form onSubmit={search} className='search-form'>
+							<input
+								type='text'
+								placeholder='Search by Name or ID (1-1010)'
+								value={userInput}
+								onChange={(e) => {
+									setUserInput(e.target.value);
+								}}
+								className='search-input'
+							/>
+							<button type='submit' className='search-submit-btn'>
+								Search
+							</button>
+						</form>
+						<button
+							onClick={() => {
+								setChangePage('Next');
+								fetchPokemons();
+							}}>
+							Next Page
+						</button>
+					</div>
 					{pokeCards.length === 1 ? (
 						<div className='search-result-container'>
 							<div className='next-prev-btn-container'>

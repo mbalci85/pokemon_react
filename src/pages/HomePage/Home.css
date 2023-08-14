@@ -8,6 +8,13 @@
     font-size: 1.8rem;
 }
 
+.search-pagination-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
 .search-form {
     display: flex;
     min-width: 40%;
