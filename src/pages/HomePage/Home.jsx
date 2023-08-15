@@ -1,34 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 import axios from 'axios';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 
 const Home = () => {
 	const [pokeCards, setPokeCards] = useState([]);
 	const [userInput, setUserInput] = useState('');
 	const [id, setId] = useState(0);
-	const [nextUrl, setNextUrl] = useState('');
-	const [prevUrl, setPrevUrl] = useState('');
-	const [changePage, setChangePage] = useState('');
+	const [offset, setOffset] = useState(0);
+	const [charCount, setCharCount] = useState(1281);
+	const [inputPageNum, setInputPageNum] = useState('');
 	const location = useLocation(); // When click Home link, it resets page
 
-	const fetchPokemons = async (searchValue = '', change) => {
-		const url = searchValue !== ''
+	const navigate = useNavigate();
+
+	const handlePageChange = (pageNum = 1) => {
+		navigate(`?page=${pageNum}`);
+	};
+
+	let limit = 40;
+
+	const fetchPokemons = async (searchValue) => {
+		const url = searchValue
 			? `https://pokeapi.co/api/v2/pokemon/${searchValue}`
-			: changePage === 'Next'
-			? nextUrl
-			: changePage === 'Previous'
-			? prevUrl
-			: 'https://pokeapi.co/api/v2/pokemon/?limit=40';
+			: `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`;
 		try {
 			const response = await axios.get(url);
 			setPokeCards(searchValue ? [response.data] : response.data.results);
 			setId(searchValue ? response.data.id : '');
-			setNextUrl(response.data.next);
-			setPrevUrl(response.data.previous);
+			setCharCount(response.data.count);
 		} catch (error) {
-			if (error.response.status === 404) {
+			if (error.response && error.response.status === 404) {
 				setPokeCards([]);
 			}
 		}
@@ -38,9 +41,9 @@ const Home = () => {
 		fetchPokemons();
 		setPokeCards([]);
 		setUserInput('');
-		console.log(nextUrl);
-		console.log(prevUrl);
-	}, [location, changePage]);
+		console.log('first');
+		console.log(location);
+	}, [location, offset]);
 
 	const search = (e) => {
 		e.preventDefault();
@@ -50,22 +53,20 @@ const Home = () => {
 	};
 
 	const prevPoke = () => {
-		if (id - 1 !== 0) {
+		if (id - 1 !== 0 || id - 1 !== 10000) {
 			fetchPokemons(id - 1);
 			setUserInput('');
-		} else {
-			fetchPokemons(1010);
 		}
 	};
 
 	const nextPoke = () => {
-		if (id + 1 !== 1011) {
+		if (id + 1 !== 1011 || id + 1 !== 10272) {
 			fetchPokemons(id + 1);
 			setUserInput('');
-		} else {
-			fetchPokemons(1);
 		}
 	};
+
+	const goToPage = () => {};
 
 	return (
 		<>
@@ -75,15 +76,17 @@ const Home = () => {
 					<div className='search-pagination-container'>
 						<button
 							onClick={() => {
-								setChangePage('Previous');
-								fetchPokemons();
+								if (offset !== 0) {
+									setOffset(offset - limit);
+									handlePageChange(offset / limit);
+								}
 							}}>
 							Previous Page
 						</button>
 						<form onSubmit={search} className='search-form'>
 							<input
 								type='text'
-								placeholder='Search by Name or ID (1-1010)'
+								placeholder='Search by Name or ID (1-1010 or 10001-10271)'
 								value={userInput}
 								onChange={(e) => {
 									setUserInput(e.target.value);
@@ -96,11 +99,25 @@ const Home = () => {
 						</form>
 						<button
 							onClick={() => {
-								setChangePage('Next');
-								fetchPokemons();
+								if (!(offset + limit > 10271)) {
+									setOffset(offset + limit);
+									handlePageChange(offset / limit + 2);
+								}
 							}}>
 							Next Page
 						</button>
+					</div>
+
+					<div>
+						<form onSubmit={goToPage}>
+							<button type='submit'>Go to Page</button>
+							<input
+								type='text'
+								placeholder={`Up to ${Math.ceil(charCount / limit)}`}
+								value={inputPageNum}
+								onChange={(e) => setInputPageNum(e.target.value)}
+							/>
+						</form>
 					</div>
 					{pokeCards.length === 1 ? (
 						<div className='search-result-container'>

@@ -19,7 +19,13 @@ const PokemonCard = ({ pokemon }) => {
 		<>
 			{card && (
 				<div className='pokemon-card'>
-					<img src={card.sprites.other.home.front_shiny} alt='poke_img' />
+					<img
+						src={
+							card.sprites.other.home.front_shiny ||
+							card.sprites.front_default
+						}
+						alt='poke_img'
+					/>
 					<p>{pokemon.name}</p>
 					<Link to={`/detail/${card.id}`}>
 						<button>See Details</button>
