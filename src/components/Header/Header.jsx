@@ -2,11 +2,12 @@ import React from 'react';
 import './Header.css';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Header = ({ display, setDisplay }) => {
+const Header = ({ setDisplay, setOffset }) => {
 	const navigate = useNavigate();
 	const handleDisplay = () => {
 		setDisplay(true);
-		navigate('/');
+		setOffset(0);
+		navigate('/?page=1');
 	};
 	return (
 		<header>

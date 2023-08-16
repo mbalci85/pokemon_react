@@ -27,6 +27,7 @@ const Detail = () => {
 					<img
 						src={
 							pokeCard.sprites.other.home.front_shiny ||
+							pokeCard.sprites.other['official-artwork'].front_default ||
 							pokeCard.sprites.front_default
 						}
 						alt={`${pokeCard.name}_img`}

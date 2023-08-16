@@ -9,14 +9,22 @@ import Detail from './pages/PokemonDetail/Detail';
 
 const App = () => {
 	const [display, setDisplay] = useState(true);
+	const [offset, setOffset] = useState(0);
 	return (
 		<div>
 			<Router>
-				<Header display={display} setDisplay={setDisplay} />
+				<Header setDisplay={setDisplay} setOffset={setOffset} />
 				<Routes>
 					<Route
 						path='/'
-						element={<Home display={display} setDisplay={setDisplay} />}
+						element={
+							<Home
+								display={display}
+								setDisplay={setDisplay}
+								offset={offset}
+								setOffset={setOffset}
+							/>
+						}
 					/>
 					<Route path='/about' element={<About />} />
 					<Route path='/detail/:pokemonId' element={<Detail />} />

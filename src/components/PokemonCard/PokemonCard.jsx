@@ -22,6 +22,7 @@ const PokemonCard = ({ pokemon }) => {
 					<img
 						src={
 							card.sprites.other.home.front_shiny ||
+							card.sprites.other['official-artwork'].front_default ||
 							card.sprites.front_default
 						}
 						alt='poke_img'

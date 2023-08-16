@@ -4,11 +4,10 @@ import axios from 'axios';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 
-const Home = ({ display, setDisplay }) => {
+const Home = ({ display, setDisplay, offset, setOffset }) => {
 	const [pokeCards, setPokeCards] = useState([]);
 	const [userInput, setUserInput] = useState('');
 	const [id, setId] = useState(0);
-	const [offset, setOffset] = useState(0);
 	const [charCount, setCharCount] = useState(1281);
 	const [pageCount, setPageCount] = useState('');
 	const [inputPageNum, setInputPageNum] = useState('');
@@ -65,8 +64,6 @@ const Home = ({ display, setDisplay }) => {
 		if (id - 1 !== 0 || id - 1 !== 10000) {
 			fetchPokemons(id - 1);
 			setUserInput('');
-			console.log(pageCount);
-			console.log(charCount);
 		}
 	};
 
@@ -74,8 +71,6 @@ const Home = ({ display, setDisplay }) => {
 		if (id + 1 !== 1011 || id + 1 !== 10272) {
 			fetchPokemons(id + 1);
 			setUserInput('');
-			console.log(pageCount);
-			console.log(charCount);
 		}
 	};
 
@@ -103,7 +98,10 @@ const Home = ({ display, setDisplay }) => {
 									setInputPageNum('');
 								}
 							}}>
-							{'<'} Previous Page
+							{'<'} Page{' '}
+							{offset / limit !== 0 && offset / limit < pageCount
+								? offset / limit
+								: null}
 						</button>
 						<form onSubmit={search} className='search-form'>
 							<input
@@ -128,7 +126,11 @@ const Home = ({ display, setDisplay }) => {
 									setInputPageNum('');
 								}
 							}}>
-							Next Page {'>'}
+							Page{' '}
+							{offset / limit + 2 < pageCount + 2
+								? offset / limit + 2
+								: null}{' '}
+							{'>'}
 						</button>
 					</div>
 
@@ -137,10 +139,13 @@ const Home = ({ display, setDisplay }) => {
 							display ? 'go-to-page-form-container' : 'display-none'
 						}>
 						<form onSubmit={goToPage}>
-							<button type='submit'>Go to Page</button>
+							<button type='submit' className='go-to-page-btn'>
+								Go to Page
+							</button>
 							<input
 								type='text'
 								placeholder={`Up to ${pageCount}`}
+								className='go-to-page-input'
 								value={inputPageNum}
 								onChange={(e) => setInputPageNum(e.target.value)}
 							/>
@@ -158,6 +163,8 @@ const Home = ({ display, setDisplay }) => {
 									src={
 										pokeCards[0].sprites &&
 										(pokeCards[0].sprites.other.home.front_shiny ||
+											pokeCards[0].sprites.other['official-artwork']
+												.front_default ||
 											pokeCards[0].sprites.front_default)
 									}
 									alt={`${pokeCards[0].name}_img`}

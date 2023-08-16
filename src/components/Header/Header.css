@@ -5,8 +5,13 @@ header {
     background-color: var(--bg_color_header_footer);
 }
 
+nav {
+    display: flex;
+}
+
 .nav-item{
    margin: 0 0.6rem;
    font-size: 1.8rem;
    color: #ffff;
+   cursor: pointer;
 }
