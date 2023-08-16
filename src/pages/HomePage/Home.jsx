@@ -4,19 +4,25 @@ import axios from 'axios';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 
-const Home = () => {
+const Home = ({ display, setDisplay }) => {
 	const [pokeCards, setPokeCards] = useState([]);
 	const [userInput, setUserInput] = useState('');
 	const [id, setId] = useState(0);
 	const [offset, setOffset] = useState(0);
 	const [charCount, setCharCount] = useState(1281);
+	const [pageCount, setPageCount] = useState('');
 	const [inputPageNum, setInputPageNum] = useState('');
+
 	const location = useLocation(); // When click Home link, it resets page
 
 	const navigate = useNavigate();
 
 	const handlePageChange = (pageNum = 1) => {
-		navigate(`?page=${pageNum}`);
+		if (pageNum > 0 && pageNum <= Math.ceil(charCount / limit)) {
+			navigate(`?page=${pageNum}`);
+		} else {
+			navigate('/');
+		}
 	};
 
 	let limit = 40;
@@ -29,7 +35,10 @@ const Home = () => {
 			const response = await axios.get(url);
 			setPokeCards(searchValue ? [response.data] : response.data.results);
 			setId(searchValue ? response.data.id : '');
-			setCharCount(response.data.count);
+			if (response.data.count) {
+				setCharCount(response.data.count);
+				setPageCount(Math.ceil(charCount / limit) - 1);
+			}
 		} catch (error) {
 			if (error.response && error.response.status === 404) {
 				setPokeCards([]);
@@ -41,14 +50,14 @@ const Home = () => {
 		fetchPokemons();
 		setPokeCards([]);
 		setUserInput('');
-		console.log('first');
-		console.log(location);
 	}, [location, offset]);
 
 	const search = (e) => {
 		e.preventDefault();
 		if (userInput) {
 			fetchPokemons(userInput.toLowerCase());
+			setInputPageNum('');
+			setDisplay(false);
 		}
 	};
 
@@ -56,6 +65,8 @@ const Home = () => {
 		if (id - 1 !== 0 || id - 1 !== 10000) {
 			fetchPokemons(id - 1);
 			setUserInput('');
+			console.log(pageCount);
+			console.log(charCount);
 		}
 	};
 
@@ -63,10 +74,19 @@ const Home = () => {
 		if (id + 1 !== 1011 || id + 1 !== 10272) {
 			fetchPokemons(id + 1);
 			setUserInput('');
+			console.log(pageCount);
+			console.log(charCount);
 		}
 	};
 
-	const goToPage = () => {};
+	const goToPage = (e) => {
+		e.preventDefault();
+
+		if (inputPageNum >= 1 && inputPageNum <= pageCount) {
+			setOffset(limit * (inputPageNum - 1));
+			handlePageChange(inputPageNum);
+		}
+	};
 
 	return (
 		<>
@@ -75,13 +95,15 @@ const Home = () => {
 					<h1>POKEMONS</h1>
 					<div className='search-pagination-container'>
 						<button
+							className={display ? 'prev-page-btn' : 'display-none'}
 							onClick={() => {
 								if (offset !== 0) {
 									setOffset(offset - limit);
 									handlePageChange(offset / limit);
+									setInputPageNum('');
 								}
 							}}>
-							Previous Page
+							{'<'} Previous Page
 						</button>
 						<form onSubmit={search} className='search-form'>
 							<input
@@ -98,22 +120,27 @@ const Home = () => {
 							</button>
 						</form>
 						<button
+							className={display ? 'next-page-btn' : 'display-none'}
 							onClick={() => {
 								if (!(offset + limit > 10271)) {
 									setOffset(offset + limit);
 									handlePageChange(offset / limit + 2);
+									setInputPageNum('');
 								}
 							}}>
-							Next Page
+							Next Page {'>'}
 						</button>
 					</div>
 
-					<div>
+					<div
+						className={
+							display ? 'go-to-page-form-container' : 'display-none'
+						}>
 						<form onSubmit={goToPage}>
 							<button type='submit'>Go to Page</button>
 							<input
 								type='text'
-								placeholder={`Up to ${Math.ceil(charCount / limit)}`}
+								placeholder={`Up to ${pageCount}`}
 								value={inputPageNum}
 								onChange={(e) => setInputPageNum(e.target.value)}
 							/>
@@ -123,14 +150,15 @@ const Home = () => {
 						<div className='search-result-container'>
 							<div className='next-prev-btn-container'>
 								<button onClick={prevPoke} className='prev-btn'>
-									&larr; Previous
+									&larr; Previous Poke
 								</button>
 							</div>
 							<div className='filtered-char-container'>
 								<img
 									src={
-										pokeCards[0].sprites.other.home.front_shiny ||
-										pokeCards[0].sprites.front_default
+										pokeCards[0].sprites &&
+										(pokeCards[0].sprites.other.home.front_shiny ||
+											pokeCards[0].sprites.front_default)
 									}
 									alt={`${pokeCards[0].name}_img`}
 								/>
@@ -145,7 +173,7 @@ const Home = () => {
 							</div>
 							<div className='next-prev-btn-container'>
 								<button onClick={nextPoke} className='next-btn'>
-									Next &rarr;
+									Next Poke &rarr;
 								</button>
 							</div>
 						</div>
