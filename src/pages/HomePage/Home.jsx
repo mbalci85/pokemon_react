@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 import axios from 'axios';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
+import { SpinningCircles } from 'react-loading-icons';
 
 const Home = ({ display, setDisplay, offset, setOffset }) => {
 	const [pokeCards, setPokeCards] = useState([]);
@@ -11,6 +12,7 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 	const [charCount, setCharCount] = useState(1281);
 	const [pageCount, setPageCount] = useState('');
 	const [inputPageNum, setInputPageNum] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
 	const location = useLocation(); // When click Home link, it resets page
 
@@ -19,29 +21,34 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 	const handlePageChange = (pageNum = 1) => {
 		if (pageNum > 0 && pageNum <= Math.ceil(charCount / limit)) {
 			navigate(`?page=${pageNum}`);
+			setIsLoading(true);
 		} else {
 			navigate('/');
 		}
 	};
 
-	let limit = 40;
+	let limit = 30;
 
 	const fetchPokemons = async (searchValue) => {
+		setIsLoading(true);
 		const url = searchValue
 			? `https://pokeapi.co/api/v2/pokemon/${searchValue}`
 			: `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`;
 		try {
 			const response = await axios.get(url);
 			setPokeCards(searchValue ? [response.data] : response.data.results);
+
 			setId(searchValue ? response.data.id : '');
 			if (response.data.count) {
 				setCharCount(response.data.count);
-				setPageCount(Math.ceil(charCount / limit) - 1);
+				setPageCount(Math.ceil(charCount / limit));
 			}
 		} catch (error) {
 			if (error.response && error.response.status === 404) {
 				setPokeCards([]);
 			}
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -83,7 +90,12 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 		}
 	};
 
-	return (
+	return isLoading ? (
+		<div className='loading'>
+			<p style={{ fontSize: '5rem' }}>Loading...</p>
+			<SpinningCircles stroke='#98ff98' strokeOpacity={0.125} speed={0.75} />
+		</div>
+	) : (
 		<>
 			{pokeCards && (
 				<div className='all-cards-container'>
@@ -127,9 +139,7 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 								}
 							}}>
 							Page{' '}
-							{offset / limit + 2 < pageCount + 2
-								? offset / limit + 2
-								: null}{' '}
+							{offset / limit < pageCount - 1 ? offset / limit + 2 : null}{' '}
 							{'>'}
 						</button>
 					</div>
