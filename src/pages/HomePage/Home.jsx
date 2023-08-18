@@ -92,7 +92,6 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 
 	return isLoading ? (
 		<div className='loading'>
-			<p style={{ fontSize: '5rem' }}>Loading...</p>
 			<SpinningCircles stroke='#98ff98' strokeOpacity={0.125} speed={0.75} />
 		</div>
 	) : (
