@@ -3,7 +3,7 @@ import './Home.css';
 import axios from 'axios';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
-import { SpinningCircles } from 'react-loading-icons';
+import ThreeDots from 'react-loading-icons/dist/esm/components/three-dots';
 
 const Home = ({ display, setDisplay, offset, setOffset }) => {
 	const [pokeCards, setPokeCards] = useState([]);
@@ -92,7 +92,7 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 
 	return isLoading ? (
 		<div className='loading'>
-			<SpinningCircles stroke='#98ff98' strokeOpacity={0.125} speed={0.75} />
+			<ThreeDots stroke='#98ff98' strokeOpacity={0.125} speed={0.75} />
 		</div>
 	) : (
 		<>
@@ -124,7 +124,10 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 								}}
 								className='search-input'
 							/>
-							<button type='submit' className='search-submit-btn'>
+							<button
+								type='submit'
+								className='search-submit-btn'
+								disabled={!userInput}>
 								Search
 							</button>
 						</form>
@@ -148,7 +151,10 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 							display ? 'go-to-page-form-container' : 'display-none'
 						}>
 						<form onSubmit={goToPage}>
-							<button type='submit' className='go-to-page-btn'>
+							<button
+								type='submit'
+								className='go-to-page-btn'
+								disabled={!inputPageNum}>
 								Go to Page
 							</button>
 							<input
