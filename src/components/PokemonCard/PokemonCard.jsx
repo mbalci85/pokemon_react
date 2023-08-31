@@ -2,18 +2,42 @@ import React, { useState, useEffect } from 'react';
 import './PokemonCard.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { FaFaceGrinHearts, FaFaceRollingEyes } from 'react-icons/fa6';
 
-const PokemonCard = ({ pokemon }) => {
+const PokemonCard = ({
+	pokemon,
+	favPokes,
+	setFavPokes,
+	favPokeCards,
+	setFavPokeCards,
+}) => {
 	const [card, setCard] = useState('');
 
 	useEffect(() => {
-		axios
-			.get(pokemon.url)
-			.then((res) => {
-				setCard(res.data);
-			})
-			.catch((err) => console.log(err));
+		if (pokemon.url) {
+			axios
+				.get(pokemon.url)
+				.then((res) => {
+					setCard(res.data);
+				})
+				.catch((err) => console.error(err));
+		} else {
+			setCard(pokemon);
+		}
 	}, []);
+
+	const handleFavorites = () => {
+		if (favPokes.includes(card.id)) {
+			const filteredFavorites = favPokes.filter((id) => id !== card.id);
+			setFavPokes(filteredFavorites);
+			localStorage.setItem('fav-pokes', JSON.stringify(filteredFavorites));
+			setFavPokeCards(favPokeCards.filter((poke) => poke.id !== card.id));
+		} else {
+			const newFavPokes = [...favPokes, card.id];
+			setFavPokes(newFavPokes);
+			localStorage.setItem('fav-pokes', JSON.stringify(newFavPokes));
+		}
+	};
 
 	return (
 		<>
@@ -31,6 +55,24 @@ const PokemonCard = ({ pokemon }) => {
 					<Link to={`/detail/${card.id}`}>
 						<button>See Details</button>
 					</Link>
+					<FaFaceGrinHearts
+						className={
+							favPokes.includes(card.id)
+								? 'remove-from-fav-icon'
+								: 'display-none'
+						}
+						title='Remove from Favorites'
+						onClick={handleFavorites}
+					/>
+					<FaFaceRollingEyes
+						className={
+							favPokes.includes(card.id)
+								? 'display-none'
+								: 'add-to-fav-icon'
+						}
+						title='Add to Favorites'
+						onClick={handleFavorites}
+					/>
 				</div>
 			)}
 		</>
