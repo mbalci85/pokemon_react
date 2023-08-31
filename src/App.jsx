@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer';
 import Home from './pages/HomePage/Home';
 import About from './pages/About/About';
 import Detail from './pages/PokemonDetail/Detail';
+import Favorites from './pages/Favorites/Favorites';
 
 const App = () => {
 	const [display, setDisplay] = useState(true);
@@ -28,6 +29,7 @@ const App = () => {
 					/>
 					<Route path='/about' element={<About />} />
 					<Route path='/detail/:pokemonId' element={<Detail />} />
+					<Route path='/favorites' element={<Favorites />} />
 				</Routes>
 				<Footer />
 			</Router>

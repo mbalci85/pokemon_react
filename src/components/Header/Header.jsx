@@ -18,6 +18,9 @@ const Header = ({ setDisplay, setOffset }) => {
 				<Link to='/about' className='nav-item'>
 					About
 				</Link>
+				<Link to='/favorites' className='nav-item'>
+					Favorites
+				</Link>
 			</nav>
 		</header>
 	);

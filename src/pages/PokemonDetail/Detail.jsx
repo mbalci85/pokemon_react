@@ -18,6 +18,7 @@ const Detail = () => {
 			}
 		};
 		fetchDetail();
+		console.log('Detail');
 	}, []);
 
 	return (

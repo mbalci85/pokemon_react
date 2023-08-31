@@ -56,6 +56,7 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 		fetchPokemons();
 		setPokeCards([]);
 		setUserInput('');
+		console.log('Home Page');
 	}, [location, offset]);
 
 	const search = (e) => {
