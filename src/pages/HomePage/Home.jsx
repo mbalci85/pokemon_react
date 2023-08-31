@@ -5,7 +5,7 @@ import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import ThreeDots from 'react-loading-icons/dist/esm/components/three-dots';
 
-const Home = ({ display, setDisplay, offset, setOffset }) => {
+const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes }) => {
 	const [pokeCards, setPokeCards] = useState([]);
 	const [userInput, setUserInput] = useState('');
 	const [id, setId] = useState(0);
@@ -208,7 +208,14 @@ const Home = ({ display, setDisplay, offset, setOffset }) => {
 					) : (
 						<main className='all-cards'>
 							{pokeCards.map((poke) => {
-								return <PokemonCard pokemon={poke} key={poke.url} />;
+								return (
+									<PokemonCard
+										pokemon={poke}
+										key={poke.url}
+										favPokes={favPokes}
+										setFavPokes={setFavPokes}
+									/>
+								);
 							})}
 						</main>
 					)}

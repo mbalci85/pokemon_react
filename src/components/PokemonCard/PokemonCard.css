@@ -34,3 +34,17 @@
     cursor: pointer;
     width: 10rem;
 }
+
+.add-to-fav-icon  {
+    align-self: flex-end;
+    cursor: pointer;
+    color: gray;
+    margin: 0 0.4rem;
+}
+
+.remove-from-fav-icon{
+    align-self: flex-end;
+    cursor: pointer;
+    color: red;
+    margin: 0 0.4rem;
+}

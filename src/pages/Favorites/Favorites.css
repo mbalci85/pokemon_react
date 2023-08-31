@@ -1,4 +1,7 @@
 .favorites-body {
     background-color: var( --bg_color_page);
     min-height: 80vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
