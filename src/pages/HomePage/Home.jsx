@@ -27,7 +27,7 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 		}
 	};
 
-	let limit = 30;
+	let limit = 40;
 
 	const fetchPokemons = async (searchValue) => {
 		setIsLoading(true);
@@ -56,7 +56,6 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 		fetchPokemons();
 		setPokeCards([]);
 		setUserInput('');
-		console.log('Home Page');
 	}, [location, offset]);
 
 	const search = (e) => {
