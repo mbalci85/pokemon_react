@@ -12,6 +12,7 @@
 
 .pokemon-card:hover {
     box-shadow: 1rem 0.8rem 1rem 0.8rem rgba(0, 0, 0, 0.6);
+    transform:rotate(2deg) translate(0.8rem, 0.8rem) scale(1.02)
 }
 
 .pokemon-card img {
@@ -47,4 +48,19 @@
     cursor: pointer;
     color: red;
     margin: 0 0.4rem;
+}
+
+.dark-mode-card {
+    background-color: black;
+    color: white;
+    border: solid 0.3rem gray;
+    border-radius: 0.4rem;
+    box-shadow:0 0.4rem 0.9rem 0 lightgray;
+    transition: 0.3s;
+}
+
+
+.dark-mode-card:hover{
+    box-shadow:0 0.9rem 0.9rem 0.3rem lightgray;
+    transform:rotate(2deg) translate(0.8rem, 0.8rem) scale(1.02)
 }

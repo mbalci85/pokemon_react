@@ -5,8 +5,7 @@ import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import { ThemeContext } from '../../contexts/ThemeContext';
 const Favorites = ({ favPokes, setFavPokes }) => {
 	const [favPokeCards, setFavPokeCards] = useState([]);
-	const { darkMode, setDarkMode, darkModeStyle, setDarkModeStyle } =
-		useContext(ThemeContext);
+	const { darkMode, darkModeStyle } = useContext(ThemeContext);
 
 	useEffect(() => {
 		Promise.all(
@@ -27,7 +26,7 @@ const Favorites = ({ favPokes, setFavPokes }) => {
 	}, []);
 
 	return (
-		<div className='favorites-body' style={darkMode ? darkModeStyle : null}>
+		<div className={`favorites-body ${darkMode ? 'dark-mode' : ''}`}>
 			{favPokeCards.map((pokemon) => {
 				return (
 					<div key={pokemon.id}>

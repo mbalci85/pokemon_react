@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './PokemonCard.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FaFaceGrinHearts, FaFaceRollingEyes } from 'react-icons/fa6';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const PokemonCard = ({
 	pokemon,
@@ -12,6 +13,7 @@ const PokemonCard = ({
 	setFavPokeCards,
 }) => {
 	const [card, setCard] = useState('');
+	const { darkMode } = useContext(ThemeContext);
 
 	useEffect(() => {
 		if (pokemon.url) {
@@ -42,7 +44,7 @@ const PokemonCard = ({
 	return (
 		<>
 			{card && (
-				<div className='pokemon-card'>
+				<div className={`pokemon-card ${darkMode ? 'dark-mode-card' : ''}`}>
 					<img
 						src={
 							card.sprites.other.home.front_shiny ||
@@ -62,9 +64,9 @@ const PokemonCard = ({
 							onClick={handleFavorites}
 						/>
 					)}
-					{favPokes.includes(card.id) && (
+					{!favPokes.includes(card.id) && (
 						<FaFaceRollingEyes
-							className='display-none'
+							className='add-to-fav-icon'
 							title='Add to Favorites'
 							onClick={handleFavorites}
 						/>
