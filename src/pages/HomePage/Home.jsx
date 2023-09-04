@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './Home.css';
 import axios from 'axios';
-import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import ThreeDots from 'react-loading-icons/dist/esm/components/three-dots';
 import { ThemeContext } from '../../contexts/ThemeContext';
