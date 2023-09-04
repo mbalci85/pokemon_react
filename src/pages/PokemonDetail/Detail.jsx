@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import './Detail.css';
-('./App.css');
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { ThemeContext } from '../../contexts/ThemeContext';

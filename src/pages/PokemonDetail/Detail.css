@@ -35,3 +35,8 @@
 .detail-item {
     font-size: 1.25rem;
 }
+
+.dark-mode {
+    background-color: black;
+    color: white;
+}

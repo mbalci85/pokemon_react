@@ -5,7 +5,7 @@ import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import { ThemeContext } from '../../contexts/ThemeContext';
 const Favorites = ({ favPokes, setFavPokes }) => {
 	const [favPokeCards, setFavPokeCards] = useState([]);
-	const { darkMode, darkModeStyle } = useContext(ThemeContext);
+	const { darkMode } = useContext(ThemeContext);
 
 	useEffect(() => {
 		Promise.all(

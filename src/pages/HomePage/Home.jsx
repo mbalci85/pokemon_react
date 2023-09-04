@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import './Home.css';
-('./App.css');
 import axios from 'axios';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
@@ -156,26 +155,25 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 						)}
 					</div>
 
-					<div
-						className={
-							display ? 'go-to-page-form-container' : 'display-none'
-						}>
-						<form onSubmit={goToPage}>
-							<button
-								type='submit'
-								className='go-to-page-btn'
-								disabled={!inputPageNum}>
-								Go to Page
-							</button>
-							<input
-								type='text'
-								placeholder={`Up to ${pageCount}`}
-								className='go-to-page-input'
-								value={inputPageNum}
-								onChange={(e) => setInputPageNum(e.target.value)}
-							/>
-						</form>
-					</div>
+					{display && (
+						<div className='go-to-page-form-container'>
+							<form onSubmit={goToPage}>
+								<button
+									type='submit'
+									className='go-to-page-btn'
+									disabled={!inputPageNum}>
+									Go to Page
+								</button>
+								<input
+									type='text'
+									placeholder={`Up to ${pageCount}`}
+									className='go-to-page-input'
+									value={inputPageNum}
+									onChange={(e) => setInputPageNum(e.target.value)}
+								/>
+							</form>
+						</div>
+					)}
 					{pokeCards.length === 1 ? (
 						<div className='search-result-container'>
 							<div className='next-prev-btn-container'>

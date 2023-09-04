@@ -10,7 +10,7 @@ import Favorites from './pages/Favorites/Favorites';
 import ThemeContextProvider from './contexts/ThemeContext';
 
 const App = () => {
-	const [display, setDisplay] = useState(true);
+	const [display, setDisplay] = useState(true); //when user searches, next-prev page buttons and go to page form will be disappeared
 	const [offset, setOffset] = useState(0);
 	const [favPokes, setFavPokes] = useState([]);
 
@@ -23,8 +23,8 @@ const App = () => {
 	}, []);
 	return (
 		<div>
-			<Router>
-				<ThemeContextProvider>
+			<ThemeContextProvider>
+				<Router>
 					<Header setDisplay={setDisplay} setOffset={setOffset} />
 					<Routes>
 						<Route
@@ -53,8 +53,8 @@ const App = () => {
 						/>
 					</Routes>
 					<Footer />
-				</ThemeContextProvider>
-			</Router>
+				</Router>
+			</ThemeContextProvider>
 		</div>
 	);
 };

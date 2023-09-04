@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../../contexts/ThemeContext';
 
 const Header = ({ setDisplay, setOffset }) => {
-	const { darkMode, setDarkMode } = useContext(ThemeContext);
+	const { darkMode, toggleMode } = useContext(ThemeContext);
 	const navigate = useNavigate();
 	const handleDisplay = () => {
 		setDisplay(true);
@@ -24,7 +24,7 @@ const Header = ({ setDisplay, setOffset }) => {
 					Favorites
 				</Link>
 			</nav>
-			<button className='theme-btn' onClick={() => setDarkMode(!darkMode)}>
+			<button className='theme-btn' onClick={toggleMode}>
 				{darkMode ? 'Light Mode' : 'Dark Mode'}
 			</button>
 		</header>
