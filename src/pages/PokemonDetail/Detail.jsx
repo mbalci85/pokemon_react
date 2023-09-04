@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Detail.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
+import { ThemeContext } from '../../contexts/ThemeContext';
 const Detail = () => {
 	const { pokemonId } = useParams();
 	const detailUrl = `https://pokeapi.co/api/v2/pokemon/${pokemonId}`;
 	const [pokeCard, setPokeCard] = useState('');
+
+	const { darkMode } = useContext(ThemeContext);
 
 	useEffect(() => {
 		const fetchDetail = async () => {
@@ -18,13 +20,12 @@ const Detail = () => {
 			}
 		};
 		fetchDetail();
-		console.log('Detail');
 	}, []);
 
 	return (
 		<>
 			{pokeCard && (
-				<div className='detail-container'>
+				<div className={`detail-container ${darkMode ? 'dark-mode' : ''}`}>
 					<img
 						src={
 							pokeCard.sprites.other.home.front_shiny ||

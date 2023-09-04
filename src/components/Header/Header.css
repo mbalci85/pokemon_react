@@ -1,8 +1,10 @@
 header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 10vh;
     background-color: var(--bg_color_header_footer);
+
 }
 
 nav {
@@ -14,4 +16,13 @@ nav {
    font-size: 1.8rem;
    color: #ffff;
    cursor: pointer;
+}
+
+
+.theme-btn {
+    background-color: var(--background-color);
+    color: white;    
+    font-size: 1.8rem;
+    border: none;
+    margin: 0 0.6rem
 }

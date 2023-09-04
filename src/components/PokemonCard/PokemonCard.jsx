@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './PokemonCard.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FaFaceGrinHearts, FaFaceRollingEyes } from 'react-icons/fa6';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const PokemonCard = ({
 	pokemon,
@@ -12,6 +13,7 @@ const PokemonCard = ({
 	setFavPokeCards,
 }) => {
 	const [card, setCard] = useState('');
+	const { darkMode } = useContext(ThemeContext);
 
 	useEffect(() => {
 		if (pokemon.url) {
@@ -42,7 +44,7 @@ const PokemonCard = ({
 	return (
 		<>
 			{card && (
-				<div className='pokemon-card'>
+				<div className={`pokemon-card ${darkMode ? 'dark-mode-card' : ''}`}>
 					<img
 						src={
 							card.sprites.other.home.front_shiny ||
@@ -55,24 +57,20 @@ const PokemonCard = ({
 					<Link to={`/detail/${card.id}`}>
 						<button>See Details</button>
 					</Link>
-					<FaFaceGrinHearts
-						className={
-							favPokes.includes(card.id)
-								? 'remove-from-fav-icon'
-								: 'display-none'
-						}
-						title='Remove from Favorites'
-						onClick={handleFavorites}
-					/>
-					<FaFaceRollingEyes
-						className={
-							favPokes.includes(card.id)
-								? 'display-none'
-								: 'add-to-fav-icon'
-						}
-						title='Add to Favorites'
-						onClick={handleFavorites}
-					/>
+					{favPokes.includes(card.id) && (
+						<FaFaceGrinHearts
+							className='remove-from-fav-icon'
+							title='Remove from Favorites'
+							onClick={handleFavorites}
+						/>
+					)}
+					{!favPokes.includes(card.id) && (
+						<FaFaceRollingEyes
+							className='add-to-fav-icon'
+							title='Add to Favorites'
+							onClick={handleFavorites}
+						/>
+					)}
 				</div>
 			)}
 		</>

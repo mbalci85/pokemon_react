@@ -5,3 +5,8 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
 }
+
+.dark-mode {
+    background-color: black;
+    color: white;
+}

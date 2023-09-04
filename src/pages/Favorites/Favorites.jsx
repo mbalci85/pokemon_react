@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Favorites.css';
 import axios from 'axios';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
+import { ThemeContext } from '../../contexts/ThemeContext';
 const Favorites = ({ favPokes, setFavPokes }) => {
 	const [favPokeCards, setFavPokeCards] = useState([]);
+	const { darkMode } = useContext(ThemeContext);
 
 	useEffect(() => {
 		Promise.all(
@@ -24,7 +26,7 @@ const Favorites = ({ favPokes, setFavPokes }) => {
 	}, []);
 
 	return (
-		<div className='favorites-body'>
+		<div className={`favorites-body ${darkMode ? 'dark-mode' : ''}`}>
 			{favPokeCards.map((pokemon) => {
 				return (
 					<div key={pokemon.id}>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Home.css';
 import axios from 'axios';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import ThreeDots from 'react-loading-icons/dist/esm/components/three-dots';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes }) => {
 	const [pokeCards, setPokeCards] = useState([]);
@@ -18,6 +19,8 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 
 	const navigate = useNavigate();
 
+	const { darkMode } = useContext(ThemeContext);
+
 	const handlePageChange = (pageNum = 1) => {
 		if (pageNum > 0 && pageNum <= Math.ceil(charCount / limit)) {
 			navigate(`?page=${pageNum}`);
@@ -27,7 +30,7 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 		}
 	};
 
-	let limit = 30;
+	let limit = 40;
 
 	const fetchPokemons = async (searchValue) => {
 		setIsLoading(true);
@@ -56,7 +59,6 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 		fetchPokemons();
 		setPokeCards([]);
 		setUserInput('');
-		console.log('Home Page');
 	}, [location, offset]);
 
 	const search = (e) => {
@@ -92,29 +94,31 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 	};
 
 	return isLoading ? (
-		<div className='loading'>
+		<div className={`loading ${darkMode ? 'dark-mode' : ''}`}>
 			<ThreeDots stroke='#98ff98' strokeOpacity={0.125} speed={0.75} />
 		</div>
 	) : (
 		<>
 			{pokeCards && (
-				<div className='all-cards-container'>
+				<div className={`all-cards-container ${darkMode ? 'dark-mode' : ''}`}>
 					<h1>POKEMONS</h1>
 					<div className='search-pagination-container'>
-						<button
-							className={display ? 'prev-page-btn' : 'display-none'}
-							onClick={() => {
-								if (offset !== 0) {
-									setOffset(offset - limit);
-									handlePageChange(offset / limit);
-									setInputPageNum('');
-								}
-							}}>
-							{'<'} Page{' '}
-							{offset / limit !== 0 && offset / limit < pageCount
-								? offset / limit
-								: null}
-						</button>
+						{display && (
+							<button
+								className={`prev-page-btn ${darkMode ? 'dark-mode' : ''}`}
+								onClick={() => {
+									if (offset !== 0) {
+										setOffset(offset - limit);
+										handlePageChange(offset / limit);
+										setInputPageNum('');
+									}
+								}}>
+								{'<'} Page{' '}
+								{offset / limit !== 0 && offset / limit < pageCount
+									? offset / limit
+									: null}
+							</button>
+						)}
 						<form onSubmit={search} className='search-form'>
 							<input
 								type='text'
@@ -132,45 +136,50 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 								Search
 							</button>
 						</form>
-						<button
-							className={display ? 'next-page-btn' : 'display-none'}
-							onClick={() => {
-								if (!(offset + limit > 10271)) {
-									setOffset(offset + limit);
-									handlePageChange(offset / limit + 2);
-									setInputPageNum('');
-								}
-							}}>
-							Page{' '}
-							{offset / limit < pageCount - 1 ? offset / limit + 2 : null}{' '}
-							{'>'}
-						</button>
+						{display && (
+							<button
+								className={`next-page-btn ${darkMode ? 'dark-mode' : ''}`}
+								onClick={() => {
+									if (!(offset + limit > 10271)) {
+										setOffset(offset + limit);
+										handlePageChange(offset / limit + 2);
+										setInputPageNum('');
+									}
+								}}>
+								Page{' '}
+								{offset / limit < pageCount - 1
+									? offset / limit + 2
+									: null}{' '}
+								{'>'}
+							</button>
+						)}
 					</div>
 
-					<div
-						className={
-							display ? 'go-to-page-form-container' : 'display-none'
-						}>
-						<form onSubmit={goToPage}>
-							<button
-								type='submit'
-								className='go-to-page-btn'
-								disabled={!inputPageNum}>
-								Go to Page
-							</button>
-							<input
-								type='text'
-								placeholder={`Up to ${pageCount}`}
-								className='go-to-page-input'
-								value={inputPageNum}
-								onChange={(e) => setInputPageNum(e.target.value)}
-							/>
-						</form>
-					</div>
+					{display && (
+						<div className='go-to-page-form-container'>
+							<form onSubmit={goToPage}>
+								<button
+									type='submit'
+									className='go-to-page-btn'
+									disabled={!inputPageNum}>
+									Go to Page
+								</button>
+								<input
+									type='text'
+									placeholder={`Up to ${pageCount}`}
+									className='go-to-page-input'
+									value={inputPageNum}
+									onChange={(e) => setInputPageNum(e.target.value)}
+								/>
+							</form>
+						</div>
+					)}
 					{pokeCards.length === 1 ? (
 						<div className='search-result-container'>
 							<div className='next-prev-btn-container'>
-								<button onClick={prevPoke} className='prev-btn'>
+								<button
+									onClick={prevPoke}
+									className={`prev-btn ${darkMode ? 'dark-mode' : ''}`}>
 									&larr; Previous Poke
 								</button>
 							</div>
@@ -195,7 +204,9 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 								<Link to={`/detail/${id}`}>See Details</Link>
 							</div>
 							<div className='next-prev-btn-container'>
-								<button onClick={nextPoke} className='next-btn'>
+								<button
+									onClick={nextPoke}
+									className={`next-btn ${darkMode ? 'dark-mode' : ''}`}>
 									Next Poke &rarr;
 								</button>
 							</div>
