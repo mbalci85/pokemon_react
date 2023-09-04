@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './Home.css';
 import axios from 'axios';
 import { useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import PokemonCard from '../../components/PokemonCard/PokemonCard';
 import ThreeDots from 'react-loading-icons/dist/esm/components/three-dots';
+import { ThemeContext } from '../../contexts/ThemeContext';
 
 const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes }) => {
 	const [pokeCards, setPokeCards] = useState([]);
@@ -17,6 +18,9 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 	const location = useLocation(); // When click Home link, it resets page
 
 	const navigate = useNavigate();
+
+	const { darkMode, setDarkMode, darkModeStyle, setDarkModeStyle } =
+		useContext(ThemeContext);
 
 	const handlePageChange = (pageNum = 1) => {
 		if (pageNum > 0 && pageNum <= Math.ceil(charCount / limit)) {
@@ -97,11 +101,14 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 	) : (
 		<>
 			{pokeCards && (
-				<div className='all-cards-container'>
+				<div
+					className='all-cards-container'
+					style={darkMode ? darkModeStyle : null}>
 					<h1>POKEMONS</h1>
 					<div className='search-pagination-container'>
 						<button
 							className={display ? 'prev-page-btn' : 'display-none'}
+							style={darkMode ? darkModeStyle : null}
 							onClick={() => {
 								if (offset !== 0) {
 									setOffset(offset - limit);
@@ -131,19 +138,24 @@ const Home = ({ display, setDisplay, offset, setOffset, favPokes, setFavPokes })
 								Search
 							</button>
 						</form>
-						<button
-							className={display ? 'next-page-btn' : 'display-none'}
-							onClick={() => {
-								if (!(offset + limit > 10271)) {
-									setOffset(offset + limit);
-									handlePageChange(offset / limit + 2);
-									setInputPageNum('');
-								}
-							}}>
-							Page{' '}
-							{offset / limit < pageCount - 1 ? offset / limit + 2 : null}{' '}
-							{'>'}
-						</button>
+						{display && (
+							<button
+								className='next-page-btn'
+								style={darkMode ? darkModeStyle : null}
+								onClick={() => {
+									if (!(offset + limit > 10271)) {
+										setOffset(offset + limit);
+										handlePageChange(offset / limit + 2);
+										setInputPageNum('');
+									}
+								}}>
+								Page{' '}
+								{offset / limit < pageCount - 1
+									? offset / limit + 2
+									: null}{' '}
+								{'>'}
+							</button>
+						)}
 					</div>
 
 					<div

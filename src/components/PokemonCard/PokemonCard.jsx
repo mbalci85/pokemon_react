@@ -55,24 +55,20 @@ const PokemonCard = ({
 					<Link to={`/detail/${card.id}`}>
 						<button>See Details</button>
 					</Link>
-					<FaFaceGrinHearts
-						className={
-							favPokes.includes(card.id)
-								? 'remove-from-fav-icon'
-								: 'display-none'
-						}
-						title='Remove from Favorites'
-						onClick={handleFavorites}
-					/>
-					<FaFaceRollingEyes
-						className={
-							favPokes.includes(card.id)
-								? 'display-none'
-								: 'add-to-fav-icon'
-						}
-						title='Add to Favorites'
-						onClick={handleFavorites}
-					/>
+					{favPokes.includes(card.id) && (
+						<FaFaceGrinHearts
+							className='remove-from-fav-icon'
+							title='Remove from Favorites'
+							onClick={handleFavorites}
+						/>
+					)}
+					{favPokes.includes(card.id) && (
+						<FaFaceRollingEyes
+							className='display-none'
+							title='Add to Favorites'
+							onClick={handleFavorites}
+						/>
+					)}
 				</div>
 			)}
 		</>
